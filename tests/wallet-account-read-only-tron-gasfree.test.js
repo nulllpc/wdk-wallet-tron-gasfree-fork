@@ -257,9 +257,10 @@ describe('WalletAccountReadOnlyTronGasfree', () => {
         return Promise.reject(new Error(`Unexpected fetch URL: ${url}`))
       })
 
-      const { fee } = await freshAccount.quoteTransfer(TRANSFER)
+      const { fee, activateFee } = await freshAccount.quoteTransfer(TRANSFER)
 
       expect(fee).toBe(150_000n)
+      expect(activateFee).toBe(100_000n)
     })
 
     test('should throw when the token config API returns a non-200 code', async () => {
