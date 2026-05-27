@@ -438,7 +438,7 @@ Estimates the fee for a TRC20 token transfer (typically covered by service provi
   - `recipient` (string): Recipient Tron address
   - `amount` (number | bigint): Amount in TRC20's base units
 
-**Returns:** `Promise<{fee: bigint}>` - Object containing estimated fee (typically 0 or covered by service provider)
+**Returns:** `Promise<{fee: bigint, activationFee?: bigint}>` - Object containing estimated fee and optional activation fee (paid in input token).
 
 **Example:**
 ```javascript
@@ -447,7 +447,11 @@ const quote = await account.quoteTransfer({
   recipient: 'TLyqzVGLV1srkB7dToTAEqgDSfPtXRJZYH',
   amount: 1000000n // 1 USDT (6 decimals)
 })
-console.log('Estimated fee (service provider will cover):', quote.fee, 'sun')
+console.log('Total estimated fee:', quote.fee)
+if (quote.activationFee) {
+  console.log('Activation fee:', quote.activationFee)
+}
+console.log('Estimated fee in USDT:', Number(quote.fee) / 1e6)
 ```
 
 ##### `getBalance()`
@@ -563,7 +567,7 @@ Estimates the fee for a TRC20 token transfer (typically covered by service provi
   - `recipient` (string): Recipient Tron address
   - `amount` (number | bigint): Amount in TRC20's base units
 
-**Returns:** `Promise<{fee: bigint}>` - Object containing estimated fee (typically 0 or covered by service provider)
+**Returns:** `Promise<{fee: bigint, activationFee?: bigint}>` - Object containing estimated fee and optional activation fee (paid in input token).
 
 **Example:**
 ```javascript
@@ -572,8 +576,11 @@ const quote = await readOnlyAccount.quoteTransfer({
   recipient: 'TLyqzVGLV1srkB7dToTAEqgDSfPtXRJZYH',
   amount: 1000000n // 1 USDT (6 decimals)
 })
-console.log('Estimated fee (service provider will cover):', quote.fee, 'sun')
-console.log('Estimated fee in TRX:', Number(quote.fee) / 1e6)
+console.log('Total estimated fee:', quote.fee)
+if (quote.activationFee) {
+  console.log('Activation fee:', quote.activationFee)
+}
+console.log('Estimated fee in USDT:', Number(quote.fee) / 1e6)
 ```
 
 ##### `verify(message, signature)`
